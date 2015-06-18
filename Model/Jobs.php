@@ -51,6 +51,15 @@ class Jobs
         return (bool) $query->rowCount();
     }
     
+    private static function isExistetJobById($jobId)
+    {
+        return (bool) self::execQuery('
+            SELECT COUNT(`id`) AS `count`
+            FROM `jobs`
+            WHERE `id` = ? && `state` = "ACTIVE"
+        ', [$jobId])->fetchColumn();
+    }
+    
     public function updateById($jobId, $newJobData)
     {
         if (!Model\JobsPositions::isValidPossitionsId($newJobData['position_id'])) {
@@ -58,7 +67,12 @@ class Jobs
             return;
         }
         
-        $query = $this->execQuery('
+        if (!self::isExistetJobById($jobId)) {
+            $this->setError(self::JOB_ID_DOES_NOT_EXIST);
+            return ;
+        }
+        
+        $this->execQuery('
             UPDATE `jobs`
             SET
                 `position_id` = ?,
@@ -70,10 +84,6 @@ class Jobs
             $newJobData['description'],
             $jobId
         ]);
-        
-        if (! (bool) $query->rowCount()) {
-            $this->setError(self::JOB_ID_DOES_NOT_EXIST);
-        }
     }
     
     public function getById($jobId) 
@@ -91,5 +101,37 @@ class Jobs
         }
         
         return $response;
+    }
+    
+    private static function getTotal()
+    {
+        return (int) self::execQuery('
+            SELECT COUNT(`id`) AS `count`
+            FROM `jobs`
+            WHERE `jobs`.`state` = "ACTIVE"
+        ',[])->fetchColumn();
+            
+     
+    }
+    public function getList()
+    {
+        $total = self::getTotal();
+        
+        if ($total <= 0) {
+            return [];
+        }
+        
+        $jobsList = $this->execQuery('
+            SELECT `jobs`.`id` , `position_id`, `jobs_positions`.`name` as `position_name`, `description`
+            FROM `jobs`
+            JOIN `jobs_positions` ON `jobs`.`position_id` = `jobs_positions`.`id`
+            WHERE `jobs`.`state` = "ACTIVE"
+        '.$this->getQueryLimitByReusltLimit())->fetchAll();
+        
+        if ($jobsList === false) {
+            $jobsList = [];
+        }
+        
+        return ['data' => $jobsList, 'total' => $total];
     }
 }

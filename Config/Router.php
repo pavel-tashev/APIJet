@@ -7,8 +7,9 @@ return [
         '{id}' => '([0-9]+)',
     ],
     'routes' => [
-        'jobs/list' => [R::POST, 'jobs\list'],
-        'jobs/list/{id}' => [R::GET_PUT_DELETE, 'jobs\list'],
+        'jobs' => [R::POST, 'jobs\index'],
+        'jobs/list' => [R::GET, 'jobs\list'],
+        'jobs/{id}' => [R::GET_PUT_DELETE, 'jobs\index'],
         
         'candidates/list' => [R::POST, 'candidates\list'],
         'candidates/review/{id}' => [R::GET, 'candidates\review'],

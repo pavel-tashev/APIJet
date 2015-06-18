@@ -9,7 +9,7 @@ class Jobs extends \APIJet\BaseController
 {
     use \Helper\Traits\ControllerResultLimits;
     
-    public function post_list()
+    public function post_index()
     {
         $jobData = Arr::extract($this->getInputData(), ['position_id', 'description'], '');
         
@@ -27,11 +27,9 @@ class Jobs extends \APIJet\BaseController
         ];
     }
     
-    public function get_list($jobId)
+    public function get_index($jobId)
     {
         $jobsModel = new JobsModel();
-        $this->setResponseLimitsToModel($jobsModel);
-        
         $jobDetail = $jobsModel->getById($jobId);
         
         if (empty($jobDetail)) {
@@ -41,9 +39,23 @@ class Jobs extends \APIJet\BaseController
         
         return $jobDetail;
     }
-  
+ 
+    public function get_list()
+    {
+        $jobsModel = new JobsModel();
+        $this->setResponseLimitsToModel($jobsModel);
     
-    public function put_list($jobId)
+        $jobList = $jobsModel->getList();
+    
+        if (empty($jobList)) {
+            $this->setResponseCode(404);
+            return;
+        }
+    
+        return $jobList;
+    }
+
+    public function put_index($jobId)
     {
         $jobsModel = new JobsModel();
         $newJobData = Arr::extract($this->getInputData(), ['position_id', 'description'], '');
@@ -57,7 +69,7 @@ class Jobs extends \APIJet\BaseController
         $this->setResponseCode(204);
     }
     
-    public function delete_list($jobId)
+    public function delete_index($jobId)
     {
         $jobsModel = new JobsModel();
         
