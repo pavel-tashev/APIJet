@@ -110,9 +110,8 @@ class Jobs
             FROM `jobs`
             WHERE `jobs`.`state` = "ACTIVE"
         ',[])->fetchColumn();
-            
-     
     }
+    
     public function getList()
     {
         $total = self::getTotal();
