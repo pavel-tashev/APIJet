@@ -11,7 +11,7 @@ return [
         'jobs/list' => [R::GET, 'jobs\list'],
         'jobs/{id}' => [R::GET_PUT_DELETE, 'jobs\index'],
         
-        'candidates/list' => [R::POST, 'candidates\list'],
+        'candidates/list' => [R::GET, 'candidates\list'],
         'candidates/review/{id}' => [R::GET, 'candidates\review'],
         'candidates/search/{id}' => [R::GET, 'candidates\search'],
     ]
