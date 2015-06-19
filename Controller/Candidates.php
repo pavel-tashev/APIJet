@@ -8,9 +8,6 @@ use Model\CandidatesReviews as CandidatesReviewsModel;
 class Candidates extends \APIJet\BaseController
 {
     use \Helper\Traits\ControllerResultLimits;
-//     /candidates/list  - това е лист с кандидатите
-//     /candidates/review/{id} това е review на кандидат
-//     /candidates/search/{id} вземане на кандидат по ID
     
     public function get_list()
     {

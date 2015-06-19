@@ -18,7 +18,4 @@ class JobsPositions
         
         return (bool) $query->fetchColumn();
     }
-   
-    
-    
 }
