@@ -34,6 +34,7 @@ class APIJet
     
     public static function registerAutoload()
     {
+        // require realpath(dirname(__FILE__) . '/../').'/vendor/autoload.php'; // Uncomment this line if you use composer to add packages
         spl_autoload_register(__NAMESPACE__ . "\\APIJet::autoload");
     }
     
