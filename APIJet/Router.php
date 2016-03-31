@@ -116,12 +116,12 @@ class Router
         // Applying patterns to router resource URL
         $routeResourceUrl = strtr($routeResourceUrl, $routePatterns);
         
-        $machedRouteParameters = [];
-        $isMatched = (bool) preg_match('#^'.$routeResourceUrl.'$#', $requestResourceUrl, $machedRouteParameters);
+        $matchedRouteParameters = [];
+        $isMatched = (bool) preg_match('#^'.$routeResourceUrl.'$#', $requestResourceUrl, $matchedRouteParameters);
         
         if ($isMatched) {
-            unset($machedRouteParameters[0]);
-            $this->matchedPatameters = $machedRouteParameters;
+            unset($matchedRouteParameters[0]);
+            $this->matchedPatameters = $matchedRouteParameters;
         }
         return $isMatched;
     }
